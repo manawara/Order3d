@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import Input from '@/components/Input/Input'
 import Button from '@/components/Button/Button'
 import { loginSchema } from '@/schema'
+import loginUser from '@/action/login'
 
 const FormRegister = () => {
   const [isPending, startTransition] = useTransition()
@@ -28,7 +29,22 @@ const FormRegister = () => {
   })
 
   const onSubmit = (values: z.infer<typeof loginSchema>) => {
-    console.log(values)
+    setError('')
+    setSuccess('')
+    startTransition(() => {
+      loginUser(values)
+        .then((data) => {
+          if (data?.error) {
+            setError(data.error)
+          } else if (data?.success) {
+            setSuccess(data.success)
+            reset()
+          }
+        })
+        .catch((err) => {
+          setError('An unexpected error occurred')
+        })
+    })
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

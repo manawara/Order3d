@@ -8,6 +8,7 @@ import Button from '@/components/Button/Button'
 import Link from 'next/link'
 import { registerSchema } from '@/schema'
 import { useTransition, useState } from 'react'
+import { createUser } from '@/action/user'
 
 const FormRegister = () => {
   const [isPending, startTransition] = useTransition()
@@ -29,7 +30,7 @@ const FormRegister = () => {
   })
 
   const onSubmit = (values: z.infer<typeof registerSchema>) => {
-    console.log(values)
+    createUser(values)
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

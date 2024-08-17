@@ -1,7 +1,7 @@
 import React from 'react'
 import FormRegister from '@/components/Auth/FormRegister'
 
-const RegisterPage = async () => {
+const RegisterPage = () => {
   return (
     <div>
       <h1 className="text-3xl font-semibold text-center mb-8">Druk 3D - Rejestracja</h1>
