@@ -1,7 +1,6 @@
 'use server'
 import { registerSchema } from '@/schema'
 import * as z from 'zod'
-import { signOut } from '@/auth'
 import bcrypt from 'bcryptjs'
 import { db } from '@/lib/db'
 import { addNewUser } from './register'
@@ -14,6 +13,19 @@ export const getUserByEmail = async (email: string) => {
   })
 }
 
+export const getTokenByEmail = async (email: string) => {
+  return await db.verificationToken.findFirst({
+    where: {
+      email,
+    },
+  })
+}
+
+export const deleteToken = async (token: string) => {
+  return await db.verificationToken.delete({
+    where: { token },
+  })
+}
 export const createUser = async (values: z.infer<typeof registerSchema>) => {
   const validatedFields = registerSchema.safeParse(values)
   if (validatedFields.success) {
@@ -24,6 +36,20 @@ export const createUser = async (values: z.infer<typeof registerSchema>) => {
     }
     const hashedPassword = await bcrypt.hash(password, 10)
     await addNewUser(name, email, hashedPassword)
+    return { success: 'Konto zostało stworzone!' }
   }
   return null
+}
+
+export const updatePassword = async (email: string, password: string) => {
+  const hashedPassword = await bcrypt.hash(password, 10)
+
+  await db.user.update({
+    data: {
+      password: hashedPassword,
+    },
+    where: {
+      email,
+    },
+  })
 }

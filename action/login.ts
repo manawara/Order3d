@@ -1,9 +1,10 @@
 'use server'
-import { loginSchema } from '@/schema'
 import * as z from 'zod'
-import { signIn } from '@/auth'
-import { DEFAULT_LOGIN_REDIRECT } from '@/routes'
 import { AuthError } from 'next-auth'
+import { signIn } from '@/auth'
+import { loginSchema, StatusSchema } from '@/schema'
+import { DEFAULT_LOGIN_REDIRECT } from '@/routes'
+
 import { getUserByEmail } from './user'
 const loginUser = async (values: z.infer<typeof loginSchema>) => {
   const validatedFields = loginSchema.safeParse(values)
@@ -18,6 +19,12 @@ const loginUser = async (values: z.infer<typeof loginSchema>) => {
   if (!existingUser || !existingUser.email || !existingUser.password) {
     return {
       error: 'Wprowadziłeś błędne dane!',
+    }
+  }
+
+  if (existingUser.status === StatusSchema.enum.inactive) {
+    return {
+      error: 'Konto nie zostało jeszcze zweryfikowane przez administratora!',
     }
   }
 

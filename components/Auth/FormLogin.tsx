@@ -1,11 +1,11 @@
 'use client'
 
 import * as z from 'zod'
-import { useTransition, useState } from 'react'
-import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useTransition, useState } from 'react'
+import Link from 'next/link'
 import Input from '@/components/Input/Input'
 import Button from '@/components/Button/Button'
 import { loginSchema } from '@/schema'
@@ -56,15 +56,17 @@ const FormRegister = () => {
       <div className="text-red-500 text-xs ">
         <ErrorMessage errors={errors} name="password" />
       </div>
-      <div className="text-red-500 text-xs ">
-        <p>{error}</p>
-      </div>
+      {error && (
+        <div className="text-red-500 text-xs text-center">
+          <p>{error}</p>
+        </div>
+      )}
 
       <p className="text-greenLight text-xs text-right mt-4">
-        <Link href="/auth/forgot-password"> Zapomniałeś hasło? </Link>
+        <Link href="../auth/forgot-password"> Zapomniałeś hasło? </Link>
       </p>
       <div className="mx-auto mt-8 w-1/2">
-        <Button>Zaloguj się</Button>
+        <Button>{isPending ? 'Logowanie...' : 'Zaloguj się'}</Button>
       </div>
       <p className="text-greenLight text-xs text-center mt-4">
         Nie masz konta? <Link href="/auth/register">Zarejestruj się</Link>

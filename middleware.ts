@@ -29,7 +29,7 @@ export default auth((req) => {
       callbackUrl += nextUrl.search
     }
     const encodedCallbackUrl = encodeURIComponent(callbackUrl)
-    return NextResponse.redirect(new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl))
+    return NextResponse.redirect(new URL(`/auth/login?callbackUrl=${callbackUrl}`, nextUrl))
   }
 
   return NextResponse.next()

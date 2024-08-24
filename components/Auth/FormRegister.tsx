@@ -1,4 +1,5 @@
 'use client'
+import { useTransition, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 import * as z from 'zod'
@@ -7,7 +8,6 @@ import Input from '@/components/Input/Input'
 import Button from '@/components/Button/Button'
 import Link from 'next/link'
 import { registerSchema } from '@/schema'
-import { useTransition, useState } from 'react'
 import { createUser } from '@/action/user'
 
 const FormRegister = () => {
@@ -29,8 +29,17 @@ const FormRegister = () => {
     },
   })
 
-  const onSubmit = (values: z.infer<typeof registerSchema>) => {
-    createUser(values)
+  const onSubmit = async (values: z.infer<typeof registerSchema>) => {
+    try {
+      await createUser(values).then((data) => {
+        if (data?.error) {
+          setError(data.error)
+        } else if (data?.success) {
+          setSuccess(data.success)
+          reset()
+        }
+      })
+    } catch (err) {}
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -50,11 +59,18 @@ const FormRegister = () => {
       <div className="text-red-500 text-xs ">
         <ErrorMessage errors={errors} name="confirmPassword" />
       </div>
-      <div className="text-red-500 text-xs ">
-        <p>{error}</p>
-      </div>
+      {error && (
+        <div className="text-red-500 text-xs ">
+          <p>{error}</p>
+        </div>
+      )}
+      {success && (
+        <div className="text-greenLight text-sm text-center">
+          <p>{success}</p>
+        </div>
+      )}
       <div className="mx-auto mt-8 w-1/2">
-        <Button>Zarejestruj się</Button>
+        <Button>{isPending ? 'Rejestracja trwa...' : 'Zarejestruj się'}</Button>
       </div>
       <p className="text-greenLight text-xs text-center mt-4">
         Masz juz konto? <Link href="/auth/login">Zaloguj się</Link>
