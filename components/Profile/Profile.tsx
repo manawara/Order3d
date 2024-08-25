@@ -22,7 +22,7 @@ const Profile = () => {
         className="w-10 h-10 rounded-full overflow-hidden relative cursor-pointer hover:scale-105 duration-300"
         onClick={handleOpenProfile}
       >
-        <Image src={profileIcon} alt="profile logo" layout="fill" objectFit="cover" />
+        <Image src={profileIcon} alt="profile logo" fill className="object-cover" />
       </button>
       {open && <ProfileDetails />}
     </div>
