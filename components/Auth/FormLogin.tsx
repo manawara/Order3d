@@ -52,7 +52,7 @@ const FormRegister = () => {
       <div className="text-red-500 text-xs ">
         <ErrorMessage errors={errors} name="email" />
       </div>
-      <Input label="Password" type="password" placeholder="Twoja nazwa" {...register('password')} />
+      <Input label="Password" type="password" placeholder="******" {...register('password')} />
       <div className="text-red-500 text-xs ">
         <ErrorMessage errors={errors} name="password" />
       </div>
