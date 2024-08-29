@@ -8,9 +8,9 @@ const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (
     <HamburgerProvider>
       <Header />
-      <main className="flex">
+      <main className="flex max-w-screen-2xl mx-auto">
         <Sidebar />
-        <div className="flex-auto mx-4 md:ml-52 mt-2">{children}</div>
+        <div className="flex-auto mx-4 md:ml-52 mt-24 overflow-x-hidden">{children}</div>
       </main>
     </HamburgerProvider>
   )
