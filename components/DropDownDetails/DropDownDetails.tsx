@@ -1,51 +1,69 @@
 'use client'
-import { useRef, useState } from 'react'
-import { CircleEllipsis, DeleteIcon, Edit, Eye } from 'lucide-react'
+import { Fragment, useRef, useState } from 'react'
+import { CircleEllipsis, Delete, DeleteIcon, Edit, Eye } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import useOnClickOutside from '@/hook/useOnClickOutside'
+import Link from 'next/link'
 
 const DropDownDetails = () => {
   const [open, setOpen] = useState(false)
 
-  const circleRef = useRef<HTMLDivElement>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
-  useOnClickOutside(circleRef, () => setOpen(false))
+  useOnClickOutside(dropdownRef, () => setOpen(false))
 
   const handleOpenDropDown = () => {
     setOpen((prev) => !prev)
   }
 
   return (
-    <div className="relative left-0">
-      <motion.button whileHover={{ scale: 1.05 }} className="flex justify-center mx-auto">
-        <CircleEllipsis onClick={handleOpenDropDown} className="z-10 cursor-pointer" />
-      </motion.button>
+    <div className="relative top-0 left-0 flex justify-center" ref={dropdownRef}>
+      <button onClick={handleOpenDropDown}>
+        <CircleEllipsis />
+      </button>
       <AnimatePresence>
         {open && (
-          <motion.div
-            ref={circleRef}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-            className="absolute top-8 -left-1/3 z-20"
-          >
-            <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[8px] border-b-greenLight translate-x-[70px]" />
-            <ul className="p-3 bg-greenLight overflow-hidden rounded shadow-md text-xs">
-              <li className="flex gap-2 items-center mb-2">
-                <Eye size={16} />
-                Wyświetl
-              </li>
-              <li className="flex gap-2 items-center mb-2">
-                <Edit size={16} />
-                Edycja
-              </li>
-              <li className="flex gap-2 items-center">
-                <DeleteIcon size={16} />
-                Usuń
-              </li>
-            </ul>
-          </motion.div>
+          <>
+            <motion.div
+              initial={{ y: -10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{
+                y: -10,
+                opacity: 0,
+              }}
+              className="absolute top-7 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[8px] border-b-greenLight mx-auto"
+            />
+            <motion.div
+              className="absolute top-9 p-2 bg-greenLight z-20 rounded-md"
+              initial={{ y: -10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{
+                y: -10,
+                opacity: 0,
+              }}
+            >
+              <ul>
+                <li className="py-1">
+                  <Link href="/" className="flex items-center gap-2">
+                    <Eye size={15} />
+                    Wyświetl
+                  </Link>
+                </li>
+                <li className="py-1">
+                  <Link href="/" className="flex items-center gap-2">
+                    <Edit size={15} />
+                    Edit
+                  </Link>
+                </li>
+                <li className="py-1">
+                  <Link href="/" className="flex items-center gap-2">
+                    <Delete size={15} />
+                    Usuń
+                  </Link>
+                </li>
+              </ul>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </div>
