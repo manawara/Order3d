@@ -1,42 +1,48 @@
-import NextAuth, { DefaultSession } from 'next-auth'
-import { PrismaAdapter } from '@auth/prisma-adapter'
-import authConfig from './auth.config'
-import { db } from './lib/db'
-import { JWT } from 'next-auth/jwt'
+import NextAuth, { DefaultSession } from "next-auth";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import authConfig from "./auth.config";
+import { db } from "./lib/db";
+import { JWT } from "next-auth/jwt";
 
-declare module 'next-auth/jwt' {
+declare module "next-auth/jwt" {
   interface JWT {
-    role?: string
+    role?: string;
+    id?: string;
   }
 }
 
-declare module 'next-auth' {
+declare module "next-auth" {
   interface Session extends DefaultSession {
     user?: {
-      role?: string
-    } & DefaultSession['user']
+      role?: string;
+      id?: string;
+    } & DefaultSession["user"];
   }
 
   interface User {
-    role?: string
+    role?: string;
+    id?: string;
   }
 }
+
 export const { auth, handlers, signIn, signOut } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role
+        token.role = user.role;
+        token.id = user.id;
       }
-      return token
+      return token;
     },
     async session({ token, session }) {
       if (token.role && session.user) {
-        session.user.role = token.role
+        session.user.role = token.role;
+        session.user.id = token.id || "";
       }
-      return session
+      return session;
     },
   },
   adapter: PrismaAdapter(db),
-  session: { strategy: 'jwt', maxAge: 86400 },
+  session: { strategy: "jwt", maxAge: 86400 },
   ...authConfig,
-})
+});

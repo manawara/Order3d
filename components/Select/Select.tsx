@@ -22,7 +22,14 @@ const listVariants: Variants = {
   },
 };
 
-const Select = ({ name, placeholder, label, data }: SelectType) => {
+const Select = ({
+  name,
+
+  placeholder,
+  label,
+  data,
+  ...otherRest
+}: SelectType) => {
   const [open, setOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
   const selectRef = useRef(null);
@@ -41,7 +48,7 @@ const Select = ({ name, placeholder, label, data }: SelectType) => {
       animate={open ? "open" : "closed"}
       ref={selectRef}
     >
-      <input type="hidden" name={name} value={selectedOption} />
+      <input type="hidden" name={name} value={selectedOption} {...otherRest} />
       <label>{label}</label>
       <motion.button
         initial={false}
@@ -60,7 +67,7 @@ const Select = ({ name, placeholder, label, data }: SelectType) => {
       <AnimatePresence>
         {open && (
           <motion.ul
-            className="bg-green-500 mt-2 rounded-md absolute top-14 z-20 w-full bg-green"
+            className="bg-green-500 mt-2 rounded-md absolute top-14 z-20 w-full bg-green  border border-solid border-greenLight "
             variants={listVariants}
             initial="closed"
             animate="open"
