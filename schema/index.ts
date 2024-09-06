@@ -1,8 +1,8 @@
 import { z } from "zod";
 export enum statusOrder {
-  toDO = "Do zrobienia",
-  inProgress = "W trakcie",
-  done = "Zrobione",
+  TODO = "Do zrobienia",
+  IN_PROGRESS = "W toku",
+  DONE = "Zrealizowany",
 }
 // creating a schema for strings
 export const loginSchema = z.object({
@@ -11,10 +11,21 @@ export const loginSchema = z.object({
 });
 export const addOrder = z.object({
   productName: z.string().min(1, "Nazwa produktu jest wymagana!"),
-  quantity: z.number().min(1, "Ilość sztuk powinna być większa od 0"),
-  status: z.nativeEnum(statusOrder),
+  quantity: z
+    .number({
+      required_error: "Pole ilość jest wymagane!",
+      invalid_type_error: "Pole ilość musi być liczbą!",
+    })
+    .positive("Ilość sztuk powinna być większa od 0"),
+  status: z.nativeEnum(statusOrder).optional(),
   client: z.string().min(1, "Brak nazwy uzytkownika"),
-  price: z.number().min(1, "Kwota powinna być większa od 0"),
+  clientEmail: z.string().optional(),
+  price: z
+    .number({
+      required_error: "Pole kwota jest wymagane!",
+      invalid_type_error: "Pole kwota musi być liczbą!",
+    })
+    .min(1, "Kwota powinna być większa od 0"),
 });
 
 export const forgotPasswordSchema = z.object({

@@ -1,8 +1,7 @@
-import { TableHeaderProps } from '@/types/Table.type'
-import React from 'react'
+import { TableHeaderProps } from "@/types/Table.type";
+import React from "react";
 
 export const TableHeader = ({ data }: TableHeaderProps) => {
-  console.log(data)
   return (
     <thead>
       <tr className="bg-green">
@@ -13,5 +12,5 @@ export const TableHeader = ({ data }: TableHeaderProps) => {
         ))}
       </tr>
     </thead>
-  )
-}
+  );
+};

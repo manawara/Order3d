@@ -1,7 +1,7 @@
-import { InputHTMLAttributes } from 'react'
+import { InputHTMLAttributes } from "react";
 
 export type InputType = {
-  label: string
-  name?: string
-  placeholder?: string
-} & InputHTMLAttributes<HTMLInputElement>
+  label?: string;
+  name?: string;
+  placeholder?: string;
+} & InputHTMLAttributes<HTMLInputElement>;

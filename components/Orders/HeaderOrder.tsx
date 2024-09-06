@@ -6,6 +6,7 @@ import Modal from "../Modal/Modal";
 import { ModalRef } from "@/types/Modal.type";
 import useOnClickOutside from "@/hook/useOnClickOutside";
 import AddOrder from "./AddOrder";
+import { AnimatePresence } from "framer-motion";
 
 const HeaderOrder = () => {
   const modalRef = useRef<ModalRef>(null);
@@ -52,9 +53,11 @@ const HeaderOrder = () => {
           count={12}
         />
       </div>
-      <Modal ref={modalRef}>
-        <AddOrder />
-      </Modal>
+      <AnimatePresence>
+        <Modal ref={modalRef}>
+          <AddOrder />
+        </Modal>
+      </AnimatePresence>
     </header>
   );
 };

@@ -18,7 +18,7 @@ const itemVariants: Variants = {
 const SelectOption = ({ label, onClick }: SelectOptionProps) => (
   <motion.li
     variants={itemVariants}
-    className="p-2 px-4 cursor-pointer hover:bg-green-200"
+    className="p-2 px-4 truncate cursor-pointer hover:bg-green-200"
     onClick={onClick}
   >
     {label}

@@ -1,14 +1,16 @@
 export type SelectOptionProps = {
-  label: string;
+  label: string | null;
   onClick: () => void;
 };
 
 export type SelectData = {
   id?: number | string;
-  value: string | null;
+  value: string;
 };
 export type SelectType = {
   name: string;
+  value?: string;
+  onChange: (item: string | null) => void;
   placeholder?: string;
   label?: string;
   data: SelectData[];

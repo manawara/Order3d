@@ -1,5 +1,5 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
@@ -8,31 +8,39 @@ import Input from "../Input/Input";
 import Select from "../Select/Select";
 import { getGroupUsers } from "@/action/user";
 import { Role } from "@/types/User.type";
-import { addOrder, statusOrder } from "@/schema";
+import { addOrder, statusOrder, StatusSchema } from "@/schema";
+import { ErrorMessage } from "@hookform/error-message";
+import { addNewOrder } from "@/action/order";
+
 const FormAddOrder = () => {
   const { data: users } = useQuery({
     queryKey: ["users", Role.USER],
     queryFn: () => getGroupUsers(Role.USER),
   });
-  if (users) {
-  }
-  const userData = users?.map(({ name, id }) => ({ id, value: name }));
+  const userData =
+    users?.map(({ name, id, email }) => ({
+      id,
+      value: name + "<" + email + ">",
+    })) || [];
 
   const {
-    reset,
+    control,
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    reset,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<z.infer<typeof addOrder>>({
     defaultValues: {
       productName: "",
-      status: statusOrder.toDO,
+      status: statusOrder.TODO,
       client: "",
     },
+    resolver: zodResolver(addOrder),
   });
-
   const onSubmit = (data: z.infer<typeof addOrder>) => {
-    console.log(data);
+    const clientEmail = data.client.match(/<(.+?)>/)?.[1];
+    addNewOrder({ ...data, clientEmail });
+    reset();
   };
 
   return (
@@ -42,45 +50,73 @@ const FormAddOrder = () => {
         placeholder="Produkt 1"
         {...register("productName")}
       />
+      <div className="text-red-600 text-xs">
+        <ErrorMessage errors={errors} name="productName" />
+      </div>
       <Input
         label="Ilość"
         placeholder="0"
         type="number"
-        {...register("quantity")}
+        {...register("quantity", { valueAsNumber: true })}
       />
-      <Select
-        data={[
-          {
-            id: 1,
-            value: "Do zrobienia",
-          },
-          {
-            id: 2,
-            value: "W toku",
-          },
-          {
-            id: 3,
-            value: "Zrobione",
-          },
-        ]}
-        label="Status"
-        placeholder="Wybierz status"
-        {...register("status")}
+      <div className="text-red-600 text-xs">
+        <ErrorMessage errors={errors} name="quantity" />
+      </div>
+
+      <Controller
+        name="status"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            data={[
+              { id: 1, value: statusOrder.TODO },
+              { id: 2, value: statusOrder.IN_PROGRESS },
+              { id: 3, value: statusOrder.DONE },
+            ]}
+            label="Status"
+            placeholder="Wybierz status"
+          />
+        )}
       />
-      <Select
-        data={userData || []}
-        label="Klient"
-        placeholder="Wybierz Klienta"
-        {...register("client")}
+      <div className="text-red-600 text-xs">
+        <ErrorMessage errors={errors} name="status" />
+      </div>
+
+      <Controller
+        name="client"
+        control={control}
+        render={({ field }) => (
+          <Select
+            {...field}
+            data={userData}
+            label="Klient"
+            placeholder="Wybierz Klienta"
+          />
+        )}
       />
+      <div className="text-red-600 text-xs">
+        <ErrorMessage errors={errors} name="client" />
+      </div>
+
       <Input
         label="Cena"
         placeholder="np. xx zł"
         type="number"
-        {...register("price")}
+        {...register("price", { valueAsNumber: true })}
       />
+      <div className="text-red-600 text-xs">
+        <ErrorMessage errors={errors} name="price" />
+      </div>
+      {isSubmitSuccessful && (
+        <div className="text-greenLight text-xs text-center ">
+          Zamówienie zostało dodane pomyślnie!
+        </div>
+      )}
       <div className="my-4">
-        <Button disabled={isSubmitting}>Dodaj zamówienie</Button>
+        <Button disabled={isSubmitting}>
+          {isSubmitting ? "Wysyłanie" : "Dodaj zamówienie"}
+        </Button>
       </div>
     </form>
   );
