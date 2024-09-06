@@ -17,7 +17,8 @@ model User {
   status        Status    @default(inactive)
   role          Role      @default(USER)
   uid           Int       @default(autoincrement())
-
+  ordersUser  Order[]   @relation("userOrders")
+  ordersAdmin Order[]   @relation("adminOrders")
   @@map("users")
 }
 
@@ -32,8 +33,6 @@ enum Status {
   active
 }
 
-
-
 model verificationToken {
   id      String   @id @default(cuid())
   email   String
@@ -41,4 +40,23 @@ model verificationToken {
   expires DateTime
 
   @@unique([email, token])
+}
+
+enum StatusOrder {
+  TODO   @map("Do zrobienia")
+  INPROGRESS   @map("W toku")
+  DONE   @map("Zrealizowany")
+}
+model Order {
+  id            Int    @id @default(autoincrement())
+  name          String?
+  createdAt     DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  price         Float   
+  user          User          @relation("userOrders", fields: [user_id], references: [id])
+  user_id       String
+  admin         User          @relation("adminOrders", fields: [admin_id], references: [id])
+  admin_id      String
+  status        StatusOrder @default(TODO)        
+  @@map("orders")
 }
