@@ -13,6 +13,13 @@ export const getUserByEmail = async (email: string) => {
     },
   });
 };
+export const getUserByID = async (id: string) => {
+  return await db.user.findUnique({
+    where: {
+      id,
+    },
+  });
+};
 
 export const getGroupUsers = async (role: Role) => {
   return await db.user.findMany({
