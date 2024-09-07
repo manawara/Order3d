@@ -25,3 +25,22 @@ export const addNewOrder = async (data: z.infer<typeof addOrder>) => {
   });
   return order;
 };
+
+export const getOrders = async (currentPage = 0, records = 20) => {
+  const orders = await db.order.findMany({
+    skip: currentPage * records,
+    take: records,
+    orderBy: {
+      id: "desc",
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
+  return orders;
+};
