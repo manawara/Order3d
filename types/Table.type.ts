@@ -1,5 +1,6 @@
 import { statusOrder } from "@/schema";
 import { ReactNode } from "react";
+import { PaginationType } from "./Pagination.type";
 
 // Enum for Status
 enum Status {
@@ -13,7 +14,8 @@ export type TableType = {
 };
 export interface TableRowProps {
   data: TableType[];
-  action?: React.JSX.Element;
+  action?: boolean;
+  optionsPagination?: PaginationType;
 }
 
 export interface HeaderDataProps {
