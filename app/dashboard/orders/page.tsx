@@ -1,7 +1,6 @@
 import HeaderOrder from "@/components/Orders/HeaderOrder";
 import Orders from "@/components/Orders/Orders";
 import OrdersWrapper from "@/components/Orders/OrdersWrapper";
-import PaginationProvider from "@/context/Pagination";
 
 import React from "react";
 
