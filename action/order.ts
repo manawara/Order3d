@@ -5,7 +5,7 @@ import { addOrder } from "@/schema";
 import { z } from "zod";
 import { getUserByEmail } from "./user";
 import { chooseOrder } from "@/helpers";
-import { redirect } from "next/navigation";
+
 export const addNewOrder = async (data: z.infer<typeof addOrder>) => {
   const session = await auth();
   const idUser = await getUserByEmail(data.clientEmail as string).then(
@@ -27,20 +27,24 @@ export const addNewOrder = async (data: z.infer<typeof addOrder>) => {
 };
 
 export const getOrders = async (currentPage = 0, records = 20) => {
-  const orders = await db.order.findMany({
-    skip: currentPage * records,
-    take: records,
-    orderBy: {
-      id: "desc",
-    },
-    include: {
-      user: {
-        select: {
-          name: true,
-          email: true,
+  const [orders, totalCount] = await Promise.all([
+    db.order.findMany({
+      skip: currentPage * records,
+      take: records,
+      orderBy: {
+        id: "desc",
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            email: true,
+          },
         },
       },
-    },
-  });
-  return orders;
+    }),
+    db.order.count(),
+  ]);
+
+  return { orders, totalCount };
 };
