@@ -44,7 +44,7 @@ model verificationToken {
 
 enum StatusOrder {
   TODO   @map("Do zrobienia")
-  INPROGRESS   @map("W toku")
+  IN_PROGRESS   @map("W toku")
   DONE   @map("Zrealizowany")
 }
 model Order {
