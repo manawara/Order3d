@@ -10,3 +10,17 @@ export const chooseOrder = (option: string) => {
       return StatusOrder.DONE;
   }
 };
+
+export const formatDate = (date: Date) => {
+  if (!(date instanceof Date)) {
+    console.error("Nieprawidłowy format daty");
+    return "Nieprawidłowa data";
+  }
+  return date.toLocaleDateString("pl-PL", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
