@@ -5,7 +5,7 @@ export const chooseOrder = (option: string) => {
     case "Do zrobienia":
       return StatusOrder.TODO;
     case "W toku":
-      return StatusOrder.INPROGRESS;
+      return StatusOrder.IN_PROGRESS;
     case "Zrealizowane":
       return StatusOrder.DONE;
   }
