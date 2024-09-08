@@ -1,8 +1,7 @@
 "use client";
 import { forwardRef } from "react";
-import { InputType } from "@/types/Input.type";
-
-const RichText = forwardRef<HTMLTextAreaElement, InputType>(
+import { RichTextType } from "@/types/RichText.type";
+const RichText = forwardRef<HTMLTextAreaElement, RichTextType>(
   ({ label, name, placeholder, ...rest }, ref) => {
     return (
       <div className="flex flex-col my-2">

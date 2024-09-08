@@ -121,10 +121,12 @@ const FormAddOrder = () => {
           Zamówienie zostało dodane pomyślnie!
         </div>
       )}
-      <div className="mb-2">
-        <Button disabled={isSubmitting}>
-          {isSubmitting ? "Wysyłanie" : "Dodaj zamówienie"}
-        </Button>
+      <div className="mb-2 flex justify-center">
+        <div className="inline-flex">
+          <Button disabled={isSubmitting}>
+            {isSubmitting ? "Wysyłanie" : "Dodaj zamówienie"}
+          </Button>
+        </div>
       </div>
     </form>
   );
