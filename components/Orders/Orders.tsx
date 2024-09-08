@@ -26,7 +26,7 @@ const Orders = () => {
     status:
       status === "TODO"
         ? statusOrder.TODO
-        : status === "INPROGRESS"
+        : status === "IN_PROGRESS"
         ? statusOrder.IN_PROGRESS
         : statusOrder.DONE,
   }));
