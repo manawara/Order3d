@@ -6,6 +6,7 @@ import { z } from "zod";
 import { getUserByEmail } from "./user";
 import { chooseOrder } from "@/helpers";
 import { OrderFormType } from "@/types/Order.type";
+import { revalidatePath } from "next/cache";
 
 export const addNewOrder = async (data: z.infer<typeof addOrder>) => {
   const session = await auth();
@@ -83,4 +84,5 @@ export const updateOrder = async (order: OrderFormType) => {
       user_id: order.userId,
     },
   });
+  revalidatePath("/dashboard/orders/");
 };

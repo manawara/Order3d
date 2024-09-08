@@ -36,6 +36,7 @@ const Select = forwardRef<HTMLInputElement, SelectType>(
           type="hidden"
           ref={ref}
           name={name}
+          id={name}
           value={selectedOption}
           onChange={(e) => handleSelectOption(e.target.value)}
           {...rest}

@@ -21,13 +21,20 @@ const FormEdit = ({
   order: OrderType;
   users: UserType[];
 }) => {
-  const queryClient = useQueryClient();
-  console.log(order);
   const userData =
     users?.map(({ name, id, email }) => ({
       id,
       value: name + "<" + email + ">",
     })) || [];
+
+  const defaultValues = {
+    productName: order.name as string,
+    quantity: order.quantity,
+    status: statusOrder[order.status as keyof typeof statusOrder],
+    client: order.user.name + "<" + order.user.email + ">",
+    price: order.price,
+    description: order.description,
+  };
   const {
     control,
     register,
@@ -35,22 +42,15 @@ const FormEdit = ({
     reset,
     formState: { errors, isSubmitSuccessful, isSubmitting },
   } = useForm<z.infer<typeof addOrder>>({
-    defaultValues: {
-      productName: order.name as string,
-      quantity: order.quantity,
-      status: statusOrder[order.status as keyof typeof statusOrder],
-      client: order.user.name + "<" + order.user.email + ">",
-      price: order.price,
-      description: order.description,
-    },
+    defaultValues,
     resolver: zodResolver(addOrder),
   });
 
+  const handleReset = () => {
+    reset(defaultValues);
+  };
   const onSubmit = (data: z.infer<typeof addOrder>) => {
-    const clientEmail = data.client.match(/<(.+?)>/)?.[1];
     updateOrder({ ...data, userId: order.user_id, orderId: order.id });
-    queryClient.invalidateQueries({ queryKey: ["orders"] });
-    reset();
   };
   return (
     <form
@@ -127,7 +127,9 @@ const FormEdit = ({
           <Button>Zapisz zmiany</Button>
         </div>
         <div className="inline-flex">
-          <Button onReset={() => reset()}>Odrzuć zmiany</Button>
+          <Button type="button" onClick={handleReset}>
+            Odrzuć zmiany
+          </Button>
         </div>
       </div>
     </form>
