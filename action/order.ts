@@ -5,6 +5,7 @@ import { addOrder } from "@/schema";
 import { z } from "zod";
 import { getUserByEmail } from "./user";
 import { chooseOrder } from "@/helpers";
+import { OrderFormType } from "@/types/Order.type";
 
 export const addNewOrder = async (data: z.infer<typeof addOrder>) => {
   const session = await auth();
@@ -19,6 +20,7 @@ export const addNewOrder = async (data: z.infer<typeof addOrder>) => {
       name: data.productName,
       price: data.price,
       description: data.description || "",
+      quantity: data.quantity,
       user: { connect: { id: idUser } },
       admin: { connect: { id: adminId } },
       status: chooseOrder(data.status as string),
@@ -48,4 +50,37 @@ export const getOrders = async (currentPage = 0, records = 20) => {
   ]);
 
   return { orders, totalCount };
+};
+
+export const getOrderByID = async (id: number) => {
+  return await db.order.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
+};
+
+export const updateOrder = async (order: OrderFormType) => {
+  console.log(order);
+  const updateUser = await db.order.update({
+    where: {
+      id: order.orderId,
+    },
+    data: {
+      name: order.productName,
+      description: order.description,
+      quantity: order.quantity,
+      price: order.price,
+      status: chooseOrder(order.status as string),
+      user_id: order.userId,
+    },
+  });
 };
