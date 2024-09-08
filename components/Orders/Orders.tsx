@@ -10,7 +10,6 @@ import { useContextPagination } from "@/context/PaginationContext";
 
 const Orders = () => {
   const { pageNumber } = useContextPagination();
-  console.log(pageNumber);
   const { data, isLoading } = useQuery({
     queryKey: ["orders", pageNumber],
     queryFn: async () => await getOrders(pageNumber, 20),

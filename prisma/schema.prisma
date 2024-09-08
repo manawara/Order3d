@@ -17,20 +17,10 @@ model User {
   status        Status    @default(inactive)
   role          Role      @default(USER)
   uid           Int       @default(autoincrement())
-  ordersUser  Order[]   @relation("userOrders")
-  ordersAdmin Order[]   @relation("adminOrders")
+  ordersAdmin   Order[]   @relation("adminOrders")
+  ordersUser    Order[]   @relation("userOrders")
+
   @@map("users")
-}
-
-
-enum Role {
-  USER
-  ADMIN
-}
-
-enum Status {
-  inactive
-  active
 }
 
 model verificationToken {
@@ -42,21 +32,34 @@ model verificationToken {
   @@unique([email, token])
 }
 
-enum StatusOrder {
-  TODO   @map("Do zrobienia")
-  IN_PROGRESS   @map("W toku")
-  DONE   @map("Zrealizowany")
-}
 model Order {
-  id            Int    @id @default(autoincrement())
-  name          String?
-  createdAt     DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  price         Float   
-  user          User          @relation("userOrders", fields: [user_id], references: [id])
-  user_id       String
-  admin         User          @relation("adminOrders", fields: [admin_id], references: [id])
-  admin_id      String
-  status        StatusOrder @default(TODO)        
+  id          Int         @id @default(autoincrement())
+  name        String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  description String
+  price       Float
+  user_id     String
+  admin_id    String
+  status      StatusOrder @default(TODO)
+  admin       User        @relation("adminOrders", fields: [admin_id], references: [id])
+  user        User        @relation("userOrders", fields: [user_id], references: [id])
+
   @@map("orders")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Status {
+  inactive
+  active
+}
+
+enum StatusOrder {
+  TODO        @map("Do zrobienia")
+  IN_PROGRESS @map("W toku")
+  DONE        @map("Zrealizowany")
 }

@@ -20,6 +20,7 @@ export const addOrder = z.object({
   status: z.nativeEnum(statusOrder).optional(),
   client: z.string().min(1, "Brak nazwy uzytkownika"),
   clientEmail: z.string().optional(),
+  description: z.string().optional(),
   price: z
     .number({
       required_error: "Pole kwota jest wymagane!",

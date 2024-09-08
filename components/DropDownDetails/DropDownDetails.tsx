@@ -1,23 +1,26 @@
-'use client'
-import { Fragment, useRef, useState } from 'react'
-import { CircleEllipsis, Delete, DeleteIcon, Edit, Eye } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
-import useOnClickOutside from '@/hook/useOnClickOutside'
-import Link from 'next/link'
+"use client";
+import { Fragment, useRef, useState } from "react";
+import { CircleEllipsis, Delete, DeleteIcon, Edit, Eye } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import useOnClickOutside from "@/hook/useOnClickOutside";
+import Link from "next/link";
 
-const DropDownDetails = () => {
-  const [open, setOpen] = useState(false)
+const DropDownDetails = ({ id }: { id: string }) => {
+  const [open, setOpen] = useState(false);
 
-  const dropdownRef = useRef<HTMLDivElement>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  useOnClickOutside(dropdownRef, () => setOpen(false))
+  useOnClickOutside(dropdownRef, () => setOpen(false));
 
   const handleOpenDropDown = () => {
-    setOpen((prev) => !prev)
-  }
+    setOpen((prev) => !prev);
+  };
 
   return (
-    <div className="relative top-0 left-0 flex justify-center" ref={dropdownRef}>
+    <div
+      className="relative top-0 left-0 flex justify-center"
+      ref={dropdownRef}
+    >
       <button onClick={handleOpenDropDown}>
         <CircleEllipsis />
       </button>
@@ -44,19 +47,28 @@ const DropDownDetails = () => {
             >
               <ul>
                 <li className="py-1">
-                  <Link href="/" className="flex items-center gap-2">
+                  <Link
+                    href={`/dashboard/orders/view/${id}`}
+                    className="flex items-center gap-2"
+                  >
                     <Eye size={15} />
                     Wyświetl
                   </Link>
                 </li>
                 <li className="py-1">
-                  <Link href="/" className="flex items-center gap-2">
+                  <Link
+                    href={`/dashboard/orders/edit/${id}`}
+                    className="flex items-center gap-2"
+                  >
                     <Edit size={15} />
                     Edit
                   </Link>
                 </li>
                 <li className="py-1">
-                  <Link href="/" className="flex items-center gap-2">
+                  <Link
+                    href={`/dashboard/view/${id}`}
+                    className="flex items-center gap-2"
+                  >
                     <Delete size={15} />
                     Usuń
                   </Link>
@@ -67,7 +79,7 @@ const DropDownDetails = () => {
         )}
       </AnimatePresence>
     </div>
-  )
-}
+  );
+};
 
-export default DropDownDetails
+export default DropDownDetails;

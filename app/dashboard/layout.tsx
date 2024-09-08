@@ -21,7 +21,7 @@ const DashboardLayout = ({
           <Header />
           <main className="flex max-w-screen-2xl mx-auto">
             <Sidebar />
-            <div className="flex-auto mx-4 md:ml-52 mt-16 overflow-x-hidden">
+            <div className="flex-auto mx-4 md:ml-52 mt-20 overflow-x-hidden">
               {children}
             </div>
           </main>

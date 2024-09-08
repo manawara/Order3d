@@ -40,7 +40,9 @@ const Select = forwardRef<HTMLInputElement, SelectType>(
           onChange={(e) => handleSelectOption(e.target.value)}
           {...rest}
         />
-        <label htmlFor={name}>{label}</label>
+        <label className="mb-1" htmlFor={name}>
+          {label}
+        </label>
         <motion.button
           initial={false}
           whileTap={{ scale: 0.97 }}

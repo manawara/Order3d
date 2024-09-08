@@ -13,11 +13,12 @@ export const addNewOrder = async (data: z.infer<typeof addOrder>) => {
   );
   if (!session?.user || !idUser) return null;
   const adminId = session.user.id;
-
+  console.log(data);
   const order = db.order.create({
     data: {
       name: data.productName,
       price: data.price,
+      description: data.description || "",
       user: { connect: { id: idUser } },
       admin: { connect: { id: adminId } },
       status: chooseOrder(data.status as string),

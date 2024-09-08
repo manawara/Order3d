@@ -11,7 +11,7 @@ import { Role } from "@/types/User.type";
 import { addOrder, statusOrder, StatusSchema } from "@/schema";
 import { ErrorMessage } from "@hookform/error-message";
 import { addNewOrder } from "@/action/order";
-
+import RichText from "../RichText/RichText";
 const FormAddOrder = () => {
   const queryClient = useQueryClient();
 
@@ -31,7 +31,7 @@ const FormAddOrder = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitSuccessful, isSubmitting },
   } = useForm<z.infer<typeof addOrder>>({
     defaultValues: {
       productName: "",
@@ -42,8 +42,8 @@ const FormAddOrder = () => {
   });
   const onSubmit = (data: z.infer<typeof addOrder>) => {
     const clientEmail = data.client.match(/<(.+?)>/)?.[1];
+    console.log(data);
     addNewOrder({ ...data, clientEmail });
-
     queryClient.invalidateQueries({ queryKey: ["orders"] });
     reset();
   };
@@ -113,12 +113,15 @@ const FormAddOrder = () => {
       <div className="text-red-600 text-xs">
         <ErrorMessage errors={errors} name="price" />
       </div>
+
+      <RichText label="Opis" {...register("description")} />
+
       {isSubmitSuccessful && (
-        <div className="text-greenLight text-xs text-center ">
+        <div className="text-greenLight text-xs text-center my-2 ">
           Zamówienie zostało dodane pomyślnie!
         </div>
       )}
-      <div className="my-4">
+      <div className="mb-2">
         <Button disabled={isSubmitting}>
           {isSubmitting ? "Wysyłanie" : "Dodaj zamówienie"}
         </Button>
