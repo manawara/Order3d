@@ -42,7 +42,6 @@ const FormAddOrder = () => {
   });
   const onSubmit = (data: z.infer<typeof addOrder>) => {
     const clientEmail = data.client.match(/<(.+?)>/)?.[1];
-    console.log(data);
     addNewOrder({ ...data, clientEmail });
     queryClient.invalidateQueries({ queryKey: ["orders"] });
     reset();
