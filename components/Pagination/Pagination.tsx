@@ -22,8 +22,12 @@ const Pagination = ({ postsPerPage, countData }: PaginationType) => {
   return (
     <div className="py-2 px-4 flex justify-between">
       <div>
-        {pageNumber === 0 ? pageNumber + 1 : pageNumber * postsPerPage + 1} do{" "}
-        {records} z {countData} wpisów
+        {pageNumber === 0 && countData === 0
+          ? 0
+          : pageNumber === 1
+          ? 1
+          : pageNumber * postsPerPage + 1}{" "}
+        do {records} z {countData} wpisów
       </div>
       <div className="flex items-center">
         <div className="size-7 flex items-center">
