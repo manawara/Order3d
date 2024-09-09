@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import useOnClickOutside from "@/hook/useOnClickOutside";
 import Link from "next/link";
 
-const DropDownDetails = ({ id }: { id: string }) => {
+const DropDownDetails = ({ id }: { id: number | string | null }) => {
   const [open, setOpen] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
