@@ -1,19 +1,34 @@
 "use client";
-import { Fragment, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { CircleEllipsis, Delete, DeleteIcon, Edit, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import useOnClickOutside from "@/hook/useOnClickOutside";
 import Link from "next/link";
-
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteOrder } from "@/action/order";
 const DropDownDetails = ({ id }: { id: number | string | null }) => {
   const [open, setOpen] = useState(false);
-
   const dropdownRef = useRef<HTMLDivElement>(null);
-
   useOnClickOutside(dropdownRef, () => setOpen(false));
 
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (id: number) => {
+      return deleteOrder(id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+    },
+  });
   const handleOpenDropDown = () => {
     setOpen((prev) => !prev);
+  };
+
+  const handleDeleteOrder = (id: number) => {
+    mutation.mutate(id);
+
+    setOpen(false);
   };
 
   return (
@@ -65,13 +80,13 @@ const DropDownDetails = ({ id }: { id: number | string | null }) => {
                   </Link>
                 </li>
                 <li className="py-1">
-                  <Link
-                    href={`/dashboard/view/${id}`}
+                  <button
+                    onClick={() => handleDeleteOrder(id as number)}
                     className="flex items-center gap-2"
                   >
                     <Delete size={15} />
                     Usuń
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </motion.div>

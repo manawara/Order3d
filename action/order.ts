@@ -15,7 +15,7 @@ export const addNewOrder = async (data: z.infer<typeof addOrder>) => {
   );
   if (!session?.user || !idUser) return null;
   const adminId = session.user.id;
-  console.log(data);
+
   const order = db.order.create({
     data: {
       name: data.productName,
@@ -70,7 +70,6 @@ export const getOrderByID = async (id: number) => {
 };
 
 export const updateOrder = async (order: OrderFormType) => {
-  console.log(order);
   const updateUser = await db.order.update({
     where: {
       id: order.orderId,
@@ -85,4 +84,12 @@ export const updateOrder = async (order: OrderFormType) => {
     },
   });
   revalidatePath("/dashboard/orders/");
+};
+
+export const deleteOrder = async (id: number) => {
+  await db.order.delete({
+    where: {
+      id,
+    },
+  });
 };
