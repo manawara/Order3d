@@ -8,6 +8,16 @@ import { useQuery } from "@tanstack/react-query";
 import Loader from "../Loader/Loader";
 import { useContextPagination } from "@/context/PaginationContext";
 
+const dataHeader = {
+  id: "ID",
+  name: "Nazwa towaru",
+  customer: "Nazwa klienta",
+  date: "Data utworzenia",
+  quantity: "Ilość",
+  status: "Status",
+  action: "Akcja",
+};
+
 const Orders = () => {
   const { pageNumber } = useContextPagination();
   const { data, isLoading } = useQuery({
@@ -17,19 +27,21 @@ const Orders = () => {
   const orders = data?.orders;
   const totalCount = data?.totalCount as number;
 
-  const ordersData = orders?.map(({ id, name, createdAt, status, user }) => ({
-    id,
-    name,
-    user: user.name,
-    createdAt: formatDate(createdAt),
-
-    status:
-      status === "TODO"
-        ? statusOrder.TODO
-        : status === "IN_PROGRESS"
-        ? statusOrder.IN_PROGRESS
-        : statusOrder.DONE,
-  }));
+  const ordersData = orders?.map(
+    ({ id, name, createdAt, quantity, status, user }) => ({
+      id,
+      name,
+      user: user.name,
+      createdAt: formatDate(createdAt),
+      quantity,
+      status:
+        status === "TODO"
+          ? statusOrder.TODO
+          : status === "IN_PROGRESS"
+          ? statusOrder.IN_PROGRESS
+          : statusOrder.DONE,
+    })
+  );
 
   return (
     <div className="w-full">
@@ -42,6 +54,7 @@ const Orders = () => {
             postsPerPage: 20, // orders of page
             countData: totalCount, // count orders
           }}
+          dataHeader={dataHeader}
         />
       )}
     </div>
