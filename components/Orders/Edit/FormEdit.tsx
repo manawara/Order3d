@@ -9,10 +9,10 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorMessage } from "@hookform/error-message";
 import { addOrder, statusOrder } from "@/schema";
-import { useQueryClient } from "@tanstack/react-query";
 import { updateOrder } from "@/action/order";
 import { OrderType } from "@/types/Order.type";
 import { UserType } from "@/types/User.type";
+import useTimeOut from "@/hook/useTimeOut";
 
 const FormEdit = ({
   order,
@@ -21,6 +21,10 @@ const FormEdit = ({
   order: OrderType;
   users: UserType[];
 }) => {
+  const [showMessage, displayMessage] = useTimeOut(
+    "Dane zostały zapisane",
+    2000
+  );
   const userData =
     users?.map(({ name, id, email }) => ({
       id,
@@ -51,6 +55,7 @@ const FormEdit = ({
   };
   const onSubmit = (data: z.infer<typeof addOrder>) => {
     updateOrder({ ...data, userId: order.user_id, orderId: order.id });
+    displayMessage();
   };
   return (
     <form
@@ -122,6 +127,9 @@ const FormEdit = ({
       </div>
 
       <RichText label="Opis" {...register("description")} />
+      <div className="text-xs text-center">
+        {isSubmitSuccessful && showMessage && showMessage}
+      </div>
       <div className="flex gap-4 justify-center mt-4">
         <div className="inline-flex">
           <Button>Zapisz zmiany</Button>
