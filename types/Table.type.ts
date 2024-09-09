@@ -16,6 +16,7 @@ export interface TableRowProps {
   data: TableType[];
   action?: boolean;
   optionsPagination?: PaginationType;
+  dataHeader: HeaderDataProps;
 }
 
 export interface HeaderDataProps {
@@ -24,4 +25,10 @@ export interface HeaderDataProps {
 
 export interface TableHeaderProps {
   data: HeaderDataProps;
+}
+
+export interface TableBodyType {
+  data: TableType[];
+  action?: boolean;
+  optionsPagination?: PaginationType;
 }
