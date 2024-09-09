@@ -1,8 +1,8 @@
-import { TableRowProps } from "@/types/Table.type";
+import { TableBodyType } from "@/types/Table.type";
 import React from "react";
 import DropDownDetails from "../DropDownDetails/DropDownDetails";
 
-const TableBody = ({ data, action }: TableRowProps) => {
+const TableBody = ({ data, action }: TableBodyType) => {
   return (
     <tbody className="w-full">
       {data.map((item) => (
