@@ -12,7 +12,7 @@ export const chooseOrder = (option: string) => {
   }
 };
 
-export const formatDate = (date: Date) => {
+export const formatDate = (date: Date | undefined) => {
   if (!(date instanceof Date)) {
     console.error("Nieprawidłowy format daty");
     return "Nieprawidłowa data";

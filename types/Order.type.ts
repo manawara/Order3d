@@ -23,7 +23,7 @@ export type OrderUser = {
 export type OrderType = {
   name: string | null | undefined; // Allow null here
   admin_id: string;
-  createdAt: Date;
+  createdAt: Date | undefined;
   id: number;
   updatedAt: Date;
 } & OrderBase &
