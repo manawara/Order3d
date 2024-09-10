@@ -4,11 +4,26 @@ import Button from "@/components/Button/Button";
 import Card from "../Card/Card";
 import Modal from "../Modal/Modal";
 import { ModalRef } from "@/types/Modal.type";
-import useOnClickOutside from "@/hook/useOnClickOutside";
 import AddOrder from "./AddOrder";
 import { AnimatePresence } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import { getOrders } from "@/action/order";
 
 const HeaderOrder = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["orders"],
+    queryFn: async () => await getOrders(),
+  });
+
+  const filterOrderByStatus = (status: string): number => {
+    if (data) {
+      const orders = data?.orders.filter(
+        (order) => order.status === status
+      ).length;
+      return orders;
+    }
+    return 0;
+  };
   const modalRef = useRef<ModalRef>(null);
   const handleOpenModal = () => {
     modalRef.current?.open();
@@ -31,26 +46,21 @@ const HeaderOrder = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <Card
           title="Aktywne zamówienia"
           description="Aktualne zamówienia w toku"
-          count={12}
+          count={filterOrderByStatus("TODO")}
         />
         <Card
           title="Zamówienia oczekujące"
           description="Zamówienia oczekujące na przetworzenie"
-          count={12}
+          count={filterOrderByStatus("IN_PROGRESS")}
         />
         <Card
           title="Zrealizowane zamówienia"
           description="Pomyślnie wydrukowane zamówienia"
-          count={12}
-        />
-        <Card
-          title="Anulowane zamówienia"
-          description="Zamówienia, które zostały anulowane"
-          count={12}
+          count={filterOrderByStatus("DONE")}
         />
       </div>
       <AnimatePresence>
