@@ -1,3 +1,4 @@
+import { statusOrder } from "@/schema";
 import { StatusOrder } from "@prisma/client";
 
 export const chooseOrder = (option: string) => {
@@ -23,4 +24,15 @@ export const formatDate = (date: Date) => {
     hour: "2-digit",
     minute: "2-digit",
   });
+};
+
+export const formatStatusOrder = (status: string) => {
+  switch (status) {
+    case "TODO":
+      return "Do zrobienia";
+    case "IN_PROGRESS":
+      return "W toku";
+    case "DONE":
+      return "Zrealizowane";
+  }
 };
