@@ -8,14 +8,24 @@ import AddOrder from "./AddOrder";
 import { AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { getOrders } from "@/action/order";
+import { useSession } from "next-auth/react";
+import { Role } from "@/types/User.type";
 
 const HeaderOrder = () => {
-  const { data, isLoading } = useQuery({
+  const session = useSession();
+  const user = session.data?.user;
+  const { data } = useQuery({
     queryKey: ["orders"],
     queryFn: async () => await getOrders(),
   });
 
   const filterOrderByStatus = (status: string): number => {
+    if (data && user?.role === Role.USER) {
+      const orders = data?.orders.filter(
+        (order) => order.status === status && order.user_id === user.id
+      ).length;
+      return orders;
+    }
     if (data) {
       const orders = data?.orders.filter(
         (order) => order.status === status
@@ -28,9 +38,6 @@ const HeaderOrder = () => {
   const handleOpenModal = () => {
     modalRef.current?.open();
   };
-  const handleCloseModal = () => {
-    modalRef.current?.close();
-  };
 
   return (
     <header>
@@ -42,24 +49,26 @@ const HeaderOrder = () => {
           </p>
         </div>
         <div>
-          <Button onClick={handleOpenModal}>Dodaj zamówienie</Button>
+          {user?.role === Role.ADMIN && (
+            <Button onClick={handleOpenModal}>Dodaj zamówienie</Button>
+          )}
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <Card
-          title="Aktywne zamówienia"
-          description="Aktualne zamówienia w toku"
+          title="Zamówienia oczekujące"
+          description="Zamówienia oczekujące na realizację"
           count={filterOrderByStatus("TODO")}
         />
         <Card
-          title="Zamówienia oczekujące"
-          description="Zamówienia oczekujące na przetworzenie"
+          title="Zamówienia aktywne"
+          description="Zamówienia, które są w trakcie realizacji"
           count={filterOrderByStatus("IN_PROGRESS")}
         />
         <Card
           title="Zrealizowane zamówienia"
-          description="Pomyślnie wydrukowane zamówienia"
+          description="Pomyślnie zrealizowane zamówienia"
           count={filterOrderByStatus("DONE")}
         />
       </div>

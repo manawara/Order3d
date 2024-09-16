@@ -1,12 +1,15 @@
 "use client";
-import { useContextPagination } from "@/context/PaginationContext";
 import { PaginationType } from "@/types/Pagination.type";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import React, { useState } from "react";
 
-const Pagination = ({ postsPerPage, countData }: PaginationType) => {
-  const { pageNumber, handleNextPage, handlePrevPage, handleChoosePage } =
-    useContextPagination();
+const Pagination = ({
+  postsPerPage,
+  countData,
+  pageNumber,
+  handleNextPage,
+  handlePrevPage,
+  handleChoosePage,
+}: PaginationType) => {
   const totalPage = Math.ceil(countData / postsPerPage) - 1;
   const page = (pageNumber + 1) * postsPerPage;
   const records = page > countData ? countData : page;

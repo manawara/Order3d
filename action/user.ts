@@ -5,7 +5,8 @@ import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
 import { addNewUser } from "./register";
 import { Role } from "@prisma/client";
-
+import { revalidatePath } from "next/cache";
+import { UpdateUserType } from "@/types/User.type";
 export const getUserByEmail = async (email: string) => {
   return await db.user.findUnique({
     where: {
@@ -68,4 +69,83 @@ export const updatePassword = async (email: string, password: string) => {
       email,
     },
   });
+};
+
+export const getUsers = async (currentPage = 0, records = 20) => {
+  const [users, totalUsers] = await Promise.all([
+    db.user.findMany({
+      skip: currentPage * records,
+      take: records,
+      orderBy: {
+        id: "desc",
+      },
+    }),
+    db.order.count(),
+  ]);
+  return { users, totalUsers };
+};
+
+export const deleteUser = async (id: string) => {
+  await db.order.deleteMany({ where: { user_id: id } });
+  await db.order.deleteMany({ where: { admin_id: id } });
+  await db.user.delete({ where: { id } });
+};
+
+export const updateUser = async (userData: UpdateUserType) => {
+  console.log(userData);
+  const user = userData.data;
+  const userId = userData.id;
+  let hashedPassword;
+  if (user?.password) {
+    hashedPassword = await bcrypt.hash(user.password, 10);
+  }
+
+  if (hashedPassword) {
+    await db.user.update({
+      data: {
+        name: user.name,
+        email: user.email,
+        status: user.status,
+        role: user.role,
+        password: hashedPassword,
+      },
+      where: {
+        id: userId,
+      },
+    });
+  } else {
+    await db.user.update({
+      data: {
+        name: user.name,
+        email: user.email,
+        status: user.status,
+        role: user.role,
+      },
+      where: {
+        id: userId,
+      },
+    });
+  }
+  revalidatePath("/dashboard/users");
+};
+
+export const updateProfile = async (user: {
+  name: string;
+  password?: string | undefined;
+  email: string;
+}) => {
+  let dataUser: { password?: string; name: string } = {
+    name: user.name,
+  };
+
+  if (user.password) {
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    dataUser.password = hashedPassword;
+  }
+
+  await db.user.update({
+    data: dataUser,
+    where: { email: user.email },
+  });
+  revalidatePath("/dashboard/profile-settings");
 };

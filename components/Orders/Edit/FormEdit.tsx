@@ -11,15 +11,20 @@ import { ErrorMessage } from "@hookform/error-message";
 import { addOrder, statusOrder } from "@/schema";
 import { updateOrder } from "@/action/order";
 import { OrderType } from "@/types/Order.type";
-import { UserType } from "@/types/User.type";
 import useTimeOut from "@/hook/useTimeOut";
+
+type FormEditType = {
+  name: string | null;
+  id: string;
+  email: string | null;
+};
 
 const FormEdit = ({
   order,
   users,
 }: {
   order: OrderType;
-  users: UserType[];
+  users: FormEditType[];
 }) => {
   const [showMessage, displayMessage] = useTimeOut(
     "Dane zostały zapisane",

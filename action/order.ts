@@ -30,7 +30,16 @@ export const addNewOrder = async (data: z.infer<typeof addOrder>) => {
   return order;
 };
 
-export const getOrders = async (currentPage = 0, records = 20) => {
+export const getOrders = async (
+  currentPage = 0,
+  records = 20,
+  userId: string | undefined | null = undefined
+) => {
+  console.log(userId);
+  let whereClause = {};
+  if (userId) {
+    whereClause = { user_id: userId };
+  }
   const [orders, totalCount] = await Promise.all([
     db.order.findMany({
       skip: currentPage * records,
@@ -46,6 +55,7 @@ export const getOrders = async (currentPage = 0, records = 20) => {
           },
         },
       },
+      where: whereClause,
     }),
     db.order.count(),
   ]);

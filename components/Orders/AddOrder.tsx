@@ -1,9 +1,6 @@
 import FormAddOrder from "./FormAddOrder";
-import { useSession } from "next-auth/react";
 
 const AddOrder = () => {
-  const { data: session } = useSession();
-
   return (
     <div className="flex flex-col w-full">
       <h3 className="text-center text-xl">Dodaj nowe zamówienie</h3>

@@ -89,3 +89,59 @@ export const resetPasswordSchema = z
   });
 
 export const StatusSchema = z.enum(["active", "inactive"]);
+
+export enum userRole {
+  USER = "USER",
+  ADMIN = "ADMIN",
+}
+
+export enum userStatus {
+  INACTIVE = "inactive",
+  ACTIVE = "active",
+}
+
+export const UserProfileSchema = z
+  .object({
+    name: z.string().min(1, "Nazwa uzytkownika jest wymagana!"),
+    email: z.string().email("Nieprawidłowy email"),
+    password: z.string().optional(),
+    repeatPassword: z.string().optional(),
+    status: z.nativeEnum(userStatus).optional(),
+    role: z.nativeEnum(userRole).optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.password !== data.repeatPassword) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Hasło się różni!",
+        path: ["password"],
+      });
+      ctx.addIssue({
+        code: "custom",
+        message: "Hasło się różni!",
+        path: ["repeatPassword"],
+      });
+    }
+  });
+
+export const UserProfileSettingSchema = z
+  .object({
+    name: z.string().min(1, "Nazwa uzytkownika jest wymagana!"),
+    email: z.string().email("Nieprawidłowy email"),
+    password: z.string().optional(),
+    repeatPassword: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.password !== data.repeatPassword) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Hasło się różni!",
+        path: ["password"],
+      });
+      ctx.addIssue({
+        code: "custom",
+        message: "Hasło się różni!",
+        path: ["repeatPassword"],
+      });
+    }
+  });

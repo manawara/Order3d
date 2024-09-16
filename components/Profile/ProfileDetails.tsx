@@ -1,8 +1,8 @@
-'use client'
-import { motion } from 'framer-motion'
-import { LogOut, Settings } from 'lucide-react'
-import SignOutButton from '../Logout'
-import Link from 'next/link'
+"use client";
+import { motion } from "framer-motion";
+import { LogOut, Settings } from "lucide-react";
+import SignOutButton from "../Logout";
+import Link from "next/link";
 
 const ProfileDetails = () => {
   return (
@@ -23,7 +23,10 @@ const ProfileDetails = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <Link href="/profile-setting" className="flex justify-center items-center gap-2">
+          <Link
+            href="/dashboard/profile-settings"
+            className="flex justify-center items-center gap-2"
+          >
             <Settings size={14} />
             Ustawienia
           </Link>
@@ -38,7 +41,7 @@ const ProfileDetails = () => {
         </motion.li>
       </ul>
     </motion.div>
-  )
-}
+  );
+};
 
-export default ProfileDetails
+export default ProfileDetails;
