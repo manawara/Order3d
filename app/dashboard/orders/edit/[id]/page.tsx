@@ -6,7 +6,7 @@ import React from "react";
 const EditOrderID = async ({ params }: { params: { id: number } }) => {
   const id = params.id;
   const users = await getGroupUsers("USER");
-  const order = await getOrderByID(+id);
+  const order = await getOrderByID(id);
 
   return (
     <div className="mt-8">
