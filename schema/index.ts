@@ -110,7 +110,7 @@ export const UserProfileSchema = z
     role: z.nativeEnum(userRole).optional(),
   })
   .superRefine((data, ctx) => {
-    if (data.password !== data.repeatPassword) {
+    if (data.repeatPassword && data.password !== data.repeatPassword) {
       ctx.addIssue({
         code: "custom",
         message: "Hasło się różni!",
