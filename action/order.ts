@@ -35,7 +35,6 @@ export const getOrders = async (
   records = 20,
   userId: string | undefined | null = undefined
 ) => {
-  console.log(userId);
   let whereClause = {};
   if (userId) {
     whereClause = { user_id: userId };
