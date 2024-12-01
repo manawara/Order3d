@@ -11,7 +11,7 @@ export const sendVerificationEmail = async (
 ) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: "Obsługa druk 3d <onboarding@resend.dev>",
+      from: "Obsługa druk 3d <zamowienia@majsterklepka.pro>",
       to: [email],
       subject: "Zresetowanie hasła  - Druk 3d",
       html: EmailForgotPasswordTemplate({
