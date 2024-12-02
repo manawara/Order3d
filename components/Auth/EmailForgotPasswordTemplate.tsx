@@ -1,4 +1,4 @@
-import { EmailTemplateProps } from '@/types/ForgotPassword.type'
+import { EmailTemplateProps } from "@/types/ForgotPassword.type";
 
 const EmailTemplate = ({ name, token }: EmailTemplateProps) => {
   return `
@@ -7,10 +7,10 @@ const EmailTemplate = ({ name, token }: EmailTemplateProps) => {
       <p>
         Aby zresetować hasło kliknij ponizszy link:
       </p>
-      <a href="http://localhost:3000/reset-password?token=${token}">Zresetuj swoje konto</a>
+      <a href="https://zamowienia.majsterklepka.pro/reset-password?token=${token}">Zresetuj swoje konto</a>
       <p>Z powazaniem , Obsługa druk 3d </p>
     </div>
-  `
-}
+  `;
+};
 
-export default EmailTemplate
+export default EmailTemplate;
