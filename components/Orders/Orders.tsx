@@ -3,7 +3,7 @@ import React from "react";
 import Table from "../Table/Table";
 import { deleteOrder, getOrders } from "@/action/order";
 import { formatDate } from "@/helpers";
-import { statusOrder } from "@/schema";
+import { StatusOrder } from "@/schema";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Loader from "../Loader/Loader";
 import { useContextPagination } from "@/context/PaginationContext";
@@ -74,13 +74,15 @@ const Orders = () => {
       name,
       user: user.name,
       createdAt: formatDate(createdAt),
-      quantity,
+      quantity: `${quantity} szt`,
       status:
         status === "TODO"
-          ? statusOrder.TODO
+          ? StatusOrder.TODO
           : status === "IN_PROGRESS"
-          ? statusOrder.IN_PROGRESS
-          : statusOrder.DONE,
+          ? StatusOrder.IN_PROGRESS
+          : status === "PROJECT"
+          ? StatusOrder.PROJECT
+          : StatusOrder.DONE,
     })
   );
   const DropDownWithProps = (props: DropDownWithPropsProps) => (

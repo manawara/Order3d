@@ -1,8 +1,10 @@
 import { z } from "zod";
-export enum statusOrder {
-  TODO = "Do zrobienia",
-  IN_PROGRESS = "W toku",
-  DONE = "Zrealizowany",
+
+export enum StatusOrder {
+  TODO = "Przyjęto zamówienie",
+  PROJECT = "W fazie projektu",
+  IN_PROGRESS = "Trwa proces druku",
+  DONE = "Druk gotowy - czekaj na kontakt",
 }
 // creating a schema for strings
 export const loginSchema = z.object({
@@ -17,7 +19,7 @@ export const addOrder = z.object({
       invalid_type_error: "Pole ilość musi być liczbą!",
     })
     .positive("Ilość sztuk powinna być większa od 0"),
-  status: z.nativeEnum(statusOrder).optional(),
+  status: z.nativeEnum(StatusOrder).optional(),
   client: z.string().min(1, "Brak nazwy uzytkownika"),
   clientEmail: z.string().optional(),
   description: z.string().optional(),

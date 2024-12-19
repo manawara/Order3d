@@ -1,16 +1,17 @@
-import { statusOrder } from "@/schema";
 import { ComponentType } from "react";
 import { PaginationType } from "./Pagination.type";
+import { StatusOrder } from "@prisma/client";
 
 // Enum for Status
 enum Status {
-  Todo = "do zrobienia",
-  InProgress = "w trakcie",
-  Done = "zrealizowany",
+  Todo = "Przyjęto zamówienie",
+  Project = "W fazie projektu",
+  InProgress = "Trwa proces druku",
+  Done = "Druk gotowy - czekaj na kontakt",
 }
 
 export type TableType = {
-  [key: string]: string | number | null | statusOrder;
+  [key: string]: string | number | null | StatusOrder;
 };
 export interface TableRowProps {
   data: TableType[];

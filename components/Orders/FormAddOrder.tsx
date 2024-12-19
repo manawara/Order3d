@@ -8,7 +8,7 @@ import Input from "../Input/Input";
 import Select from "../Select/Select";
 import { getGroupUsers } from "@/action/user";
 import { Role } from "@/types/User.type";
-import { addOrder, statusOrder, StatusSchema } from "@/schema";
+import { addOrder, StatusOrder } from "@/schema";
 import { ErrorMessage } from "@hookform/error-message";
 import { addNewOrder } from "@/action/order";
 import RichText from "../RichText/RichText";
@@ -35,7 +35,7 @@ const FormAddOrder = () => {
   } = useForm<z.infer<typeof addOrder>>({
     defaultValues: {
       productName: "",
-      status: statusOrder.TODO,
+      status: StatusOrder.TODO,
       client: "",
     },
     resolver: zodResolver(addOrder),
@@ -58,7 +58,7 @@ const FormAddOrder = () => {
         <ErrorMessage errors={errors} name="productName" />
       </div>
       <Input
-        label="Ilość"
+        label="Ilość (sztuk)"
         placeholder="0"
         type="number"
         {...register("quantity", { valueAsNumber: true })}
@@ -74,9 +74,10 @@ const FormAddOrder = () => {
           <Select
             {...field}
             data={[
-              { id: 1, value: statusOrder.TODO },
-              { id: 2, value: statusOrder.IN_PROGRESS },
-              { id: 3, value: statusOrder.DONE },
+              { id: 1, value: StatusOrder.TODO },
+              { id: 2, value: StatusOrder.PROJECT },
+              { id: 3, value: StatusOrder.IN_PROGRESS },
+              { id: 4, value: StatusOrder.DONE },
             ]}
             label="Status"
             placeholder="Wybierz status"
@@ -102,13 +103,16 @@ const FormAddOrder = () => {
       <div className="text-red-600 text-xs">
         <ErrorMessage errors={errors} name="client" />
       </div>
+      <div className="inline-flex items-center gap-2">
+        <Input
+          label="Cena"
+          placeholder="np. xx zł"
+          type="number"
+          {...register("price", { valueAsNumber: true })}
+        />
+        <span className="mt-5">zł</span>
+      </div>
 
-      <Input
-        label="Cena"
-        placeholder="np. xx zł"
-        type="number"
-        {...register("price", { valueAsNumber: true })}
-      />
       <div className="text-red-600 text-xs">
         <ErrorMessage errors={errors} name="price" />
       </div>

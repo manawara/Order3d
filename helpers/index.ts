@@ -1,13 +1,15 @@
-import { statusOrder } from "@/schema";
 import { StatusOrder } from "@prisma/client";
 
 export const chooseOrder = (option: string) => {
+  console.log(option);
   switch (option) {
-    case "Do zrobienia":
+    case "Przyjęto zamówienie":
       return StatusOrder.TODO;
-    case "W toku":
+    case "W fazie projektu":
+      return StatusOrder.PROJECT;
+    case "Trwa proces druku":
       return StatusOrder.IN_PROGRESS;
-    case "Zrealizowane":
+    case "Druk gotowy - czekaj na kontakt":
       return StatusOrder.DONE;
   }
 };
@@ -29,10 +31,12 @@ export const formatDate = (date: Date | undefined) => {
 export const formatStatusOrder = (status: string) => {
   switch (status) {
     case "TODO":
-      return "Do zrobienia";
+      return "Przyjęto zamówienie";
+    case "PROJECT":
+      return "W fazie projektu";
     case "IN_PROGRESS":
-      return "W toku";
+      return "Trwa proces druku";
     case "DONE":
-      return "Zrealizowane";
+      return "Druk gotowy - czekaj na kontakt";
   }
 };

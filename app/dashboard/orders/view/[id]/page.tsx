@@ -20,7 +20,6 @@ const ViewPageOrder = async ({ params }: { params: { id: string } }) => {
               {order?.id}
             </li>
             <li className="mt-2">
-              {" "}
               <span className="font-semibold">Status:</span>{" "}
               {formatStatusOrder(order?.status as string)}
             </li>
@@ -31,6 +30,17 @@ const ViewPageOrder = async ({ params }: { params: { id: string } }) => {
             <li className="mt-2">
               <span className="font-semibold">Data utworzenia: </span>
               {formatDate(order?.createdAt)}
+            </li>
+            <li className="mt-2">
+              <span className="font-semibold">Ilość: </span>
+              {order?.quantity} szt
+            </li>
+            <li className="mt-2">
+              <span className="font-semibold">Wartość zamówienia: </span>
+              {((order?.price as number) * (order?.quantity as number)).toFixed(
+                2
+              )}{" "}
+              zł
             </li>
             <li className="mt-2">
               <span className="font-semibold">Adres email: </span>

@@ -8,7 +8,7 @@ import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorMessage } from "@hookform/error-message";
-import { addOrder, statusOrder } from "@/schema";
+import { addOrder, StatusOrder } from "@/schema";
 import { updateOrder } from "@/action/order";
 import { OrderType } from "@/types/Order.type";
 import useTimeOut from "@/hook/useTimeOut";
@@ -39,7 +39,7 @@ const FormEdit = ({
   const defaultValues = {
     productName: order.name as string,
     quantity: order.quantity,
-    status: statusOrder[order.status as keyof typeof statusOrder],
+    status: StatusOrder[order.status as keyof typeof StatusOrder],
     client: order.user.name + "<" + order.user.email + ">",
     price: order.price,
     description: order.description,
@@ -92,9 +92,10 @@ const FormEdit = ({
           <Select
             {...field}
             data={[
-              { id: 1, value: statusOrder.TODO },
-              { id: 2, value: statusOrder.IN_PROGRESS },
-              { id: 3, value: statusOrder.DONE },
+              { id: 1, value: StatusOrder.TODO },
+              { id: 2, value: StatusOrder.PROJECT },
+              { id: 3, value: StatusOrder.IN_PROGRESS },
+              { id: 4, value: StatusOrder.DONE },
             ]}
             label="Status"
             placeholder="Wybierz status"

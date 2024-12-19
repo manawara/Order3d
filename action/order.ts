@@ -7,6 +7,7 @@ import { getUserByEmail } from "./user";
 import { chooseOrder } from "@/helpers";
 import { OrderFormType } from "@/types/Order.type";
 import { revalidatePath } from "next/cache";
+import { StatusOrder } from "@prisma/client";
 
 export const addNewOrder = async (data: z.infer<typeof addOrder>) => {
   const session = await auth();
@@ -15,7 +16,7 @@ export const addNewOrder = async (data: z.infer<typeof addOrder>) => {
   );
   if (!session?.user || !idUser) return null;
   const adminId = session.user.id;
-
+  console.log(data);
   const order = db.order.create({
     data: {
       name: data.productName,

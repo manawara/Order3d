@@ -1,5 +1,3 @@
-import { statusOrder } from "@/schema";
-
 export type OrderBase = {
   quantity: number;
   status?: string; // Make status optional

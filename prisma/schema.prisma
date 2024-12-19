@@ -60,7 +60,8 @@ enum Status {
 }
 
 enum StatusOrder {
-  TODO        @map("Do zrobienia")
-  IN_PROGRESS @map("W toku")
-  DONE        @map("Zrealizowany")
+  TODO        @map("Przyjęto zamówienie")
+  PROJECT     @map("W fazie projektu")
+  IN_PROGRESS @map("Trwa proces druku")
+  DONE        @map("Druk gotowy - czekaj na kontakt")
 }
