@@ -36,11 +36,15 @@ const ViewPageOrder = async ({ params }: { params: { id: string } }) => {
               {order?.quantity} szt
             </li>
             <li className="mt-2">
-              <span className="font-semibold">Wartość zamówienia: </span>
+              <span className="font-semibold">Kwota za sztukę: </span>
+              {order?.price.toFixed(2)} zł
+            </li>
+            <li className="mt-2">
+              <span className="font-semibold">Łączna wartość zamówienia: </span>
               {((order?.price as number) * (order?.quantity as number)).toFixed(
                 2
-              )}{" "}
-              zł
+              )}
+              zł {"(" + order?.quantity + "szt x " + order?.price + "zł)"}
             </li>
             <li className="mt-2">
               <span className="font-semibold">Adres email: </span>
